@@ -33,6 +33,14 @@ for (let i=0; i<parsedRepos.length; i++){
 
   let repo = new Repo(repoObj)
 
+  repo.save((err) => {
+    if (err){
+      console.log(err)
+    } else {
+      console.log('saved')
+    }
+  })
+
   reposArr.push(repoObj)
 
 }
@@ -65,3 +73,4 @@ module.exports.getRepo = getRepo;
 module.exports.save = save;
 module.exports.Repo =  Repo;
 module.exports.connection = connection;
+

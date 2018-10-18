@@ -1,18 +1,20 @@
 const request = require('request');
 const config = require('../config.js');
-
+const database = require('../database')
 let getReposByUsername = (username, callback) => {
+  console.log('this is username', username)
   let options = {
-    url: `https://api.github.com/username/${username}/repos`,
+    url: `https://api.github.com/users/${username}/repos`,
     headers: {
-      'User-Agent': 'GET',
+      'User-Agent': 'request',
       'Authorization': `token ${config.TOKEN}`
     }
   };
   request.get(options, (err,gitObj) => {
     if (err){
       console.log(err, null)
-    } else { console.log(null, gitObj.body)
+    } else { 
+      // console.log(null, JSON.parse(gitObj.body))
       callback(gitObj)
     }
   })

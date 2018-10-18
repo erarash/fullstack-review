@@ -17,10 +17,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.post('/repos', function (req, res) {
-console.log('hi')
-git.getReposByUsername(req.body.data, function(gitObj){
-  
+git.getReposByUsername((req.body.data), (gitObj) =>{
+
   save.save(gitObj)
+  
 })
   res.end('done');
 
@@ -53,7 +53,6 @@ git.getReposByUsername(req.body.data, function(gitObj){
 });
 
 app.get('/repos', function (req, res) {
-
   save.getRepo(function(repos){
     res.json(repos);
   })
