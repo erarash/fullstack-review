@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import RepoDisplay from './components/RepoDisplay.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -10,18 +11,12 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-
+    this.getTop25 = this.getTop25.bind(this)
   }
   
 
   componentDidMount(){
-    $.get('/repos', function(reposArr){
-
-    }).done((reposArr) => {
-      this.setState({
-        repos: reposArr
-      })
-    })
+    this.getTop25()
   }
 
 
@@ -29,13 +24,40 @@ class App extends React.Component {
 
   search (term) {
     console.log(`${term} was searched`);
+    let context = this
     $.ajax({
-      type: "POST",
+      method: "POST",
       url: "/repos",
-      data: {term: term},
-      dataType: "application/JSON"
+      data: {query: term},
+      type: "application/JSON",
+      success: function(result) {
+        console.log(result)
+        context.getTop25();
+      },
+      error: function(err) {
+        console.error(err)
+      }
     })
   }
+
+    getTop25(){
+      let context = this;
+      $.ajax({
+        method: "GET",
+        url: "/repos",
+        type: "application/json",
+        success: function(result){
+          console.log(result);
+          context.setState({ repos: result })
+        },
+        error: function(err) {
+          console.error(err)
+        }
+      })
+    }
+
+
+
 
   render () {
     return (<div>
